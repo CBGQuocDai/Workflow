@@ -34,7 +34,18 @@
     layout = "us";
     variant = "";
   };
-
+  # Bật hỗ trợ đồ họa (Hardware Acceleration)
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # Dành cho Broadwell (Gen 8) trở lên, Iris Xe dùng cái này rất tốt
+      intel-vaapi-driver         # Hỗ trợ giải mã video phần cứng
+      libva-vdpau-driver
+      libvdpau-va-gl
+    ];
+  };
+  # Đảm bảo Kernel sử dụng đúng driver
+  boot.initrd.kernelModules = [ "i915" ];
   services.printing.enable = true;
 
   # Sound
@@ -46,7 +57,13 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
+  services.logind.settings = {
+        Login = {
+                lidSwitch = "ignore";
+                lidSwitchExternalPower = "ignore";
+                lidSwitchDocked = "ignore";
+        };
+  };
   # User Account (Đã thêm quyền Android/Docker)
   users.users.quocdai = {
     isNormalUser = true;
@@ -56,6 +73,7 @@
   };
   programs.zsh.enable = true;
   programs.firefox.enable = true;
+  programs.zoom-us.enable = true;
   nixpkgs.config.allowUnfree = true;
   virtualisation.docker.enable = true;
 
@@ -63,7 +81,6 @@
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
-
     fcitx5.addons =  [
       pkgs.fcitx5-bamboo
       pkgs.fcitx5-gtk
@@ -79,16 +96,26 @@
 
   # Danh sách phần mềm
   environment.systemPackages = with pkgs; [
+    pciutils
     # Version control
     git
     gh
+    # Manage env
+    dotenv-cli
     # Editor
+    netbeans
+    jetbrains.idea-community
     neovim
     vim
+    android-studio
+    vscode
+    # manage db
+    dbeaver-bin
     # Terminal & Shell
     wezterm
     tmux
     zsh
+    postman
     # Shell enhancement
     starship
     zsh-autosuggestions
@@ -109,6 +136,16 @@
     jdk21
     maven
     android-tools
+    # Go
+    go
+    gopls
+    delve
+    # python
+    conda
+    # js - ts
+    nodejs
+    # music
+    spotify
   ];
   # Hỗ trợ chạy các file binary tải từ ngoài (như Android SDK)
   programs.nix-ld.enable = true;
