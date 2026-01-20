@@ -58,11 +58,11 @@
     pulse.enable = true;
   };
   services.logind.settings = {
-	Login = {
-		lidSwitch = "ignore";
-		lidSwitchExternalPower = "ignore";
-		lidSwitchDocked = "ignore";
-  	};
+        Login = {
+                lidSwitch = "ignore";
+                lidSwitchExternalPower = "ignore";
+                lidSwitchDocked = "ignore";
+        };
   };
   # User Account (Đã thêm quyền Android/Docker)
   users.users.quocdai = {
@@ -71,7 +71,11 @@
     extraGroups = [ "networkmanager" "wheel" "docker" "adbusers" "kvm" ];
     shell = pkgs.zsh;
   };
-  programs.zsh.enable = true;
+  programs.zsh = {
+        enable = true;
+        autosuggestions.enable = true;
+        syntaxHighlighting.enable = true;
+  };
   programs.firefox.enable = true;
   programs.zoom-us.enable = true;
   nixpkgs.config.allowUnfree = true;
@@ -92,19 +96,18 @@
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
   };
-  
-  
+
+
   # Danh sách phần mềm
   environment.systemPackages = with pkgs; [
     pciutils
     # Version control
     git
     gh
-    # Manage env 
+    # Manage env
     dotenv-cli
     # Editor
-    netbeans
-    jetbrains.idea-community 
+    jetbrains.idea-ultimate
     neovim
     vim
     android-studio
@@ -146,8 +149,8 @@
     nodejs
     # music
     spotify
-    # uml 
-    visual-paradigm-ce    
+    steam-run
+
   ];
   # Hỗ trợ chạy các file binary tải từ ngoài (như Android SDK)
   programs.nix-ld.enable = true;
