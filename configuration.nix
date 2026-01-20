@@ -34,6 +34,17 @@
     layout = "us";
     variant = "";
   };
+  # cấu hình driver ndivia
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = false;       # dùng driver proprietary
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+  nixpkgs.config.cudaSupport = true;
   # Bật hỗ trợ đồ họa (Hardware Acceleration)
   hardware.graphics = {
     enable = true;
@@ -150,7 +161,10 @@
     # music
     spotify
     steam-run
-
+    # cuda package
+    cudaPackages.cudatoolkit
+    cudnn
+    nvidia-container-toolkit
   ];
   # Hỗ trợ chạy các file binary tải từ ngoài (như Android SDK)
   programs.nix-ld.enable = true;
